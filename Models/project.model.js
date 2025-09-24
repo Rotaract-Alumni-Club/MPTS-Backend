@@ -1,4 +1,6 @@
 const mongoose = require('mongoose');
+const db = mongoose.connection.useDb("MPTS");
+
 
 const projectSchema = new mongoose.Schema({
     PName : { type: String, required: true, unique: true },
@@ -8,4 +10,5 @@ const projectSchema = new mongoose.Schema({
     Status : { type: String, required: true },
 }, { timestamps: true });
 
-module.exports = projectSchema;
+const Project = db.model('Project', projectSchema);
+module.exports = Project;
