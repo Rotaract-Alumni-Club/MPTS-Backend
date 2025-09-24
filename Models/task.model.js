@@ -2,9 +2,7 @@ const mongoose = require('mongoose');
 const db = mongoose.connection.useDb('MPTS');
 
 const taskSchema = new mongoose.Schema({
-    Status:{type:String
-
-    },
+    Status:{type:String},
     StartDate:{type:Date},
     EndDate:{type:Date}
 
