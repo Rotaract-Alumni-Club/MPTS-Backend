@@ -3,9 +3,9 @@ const db = mongoose.connection.useDb("MPTS");
 
 
 const committeeSchema = new mongoose.Schema({
-    CName : { type: String, required: true, unique: true },
+    CName : { type: String, required: true },
     Description : { type: String, required: true },
-    Coordinator : { type: String, required: true },
+    Coordinator : { type: String },
     MemberCount: {type:Number, required:true}
 }, { timestamps: true });
 

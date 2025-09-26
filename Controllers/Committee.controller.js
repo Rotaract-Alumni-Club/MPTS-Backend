@@ -8,10 +8,10 @@ exports.addCommittee = async (req, res) => {
 res.status(200).send({
             "Message": "Committee added Sucessfully.",
             "data" : newCommittee
-})
-    }catch(err){
+});     
+}catch(err){
         res.status(500).send({
-            message : "error".err
-        })
+            message : err
+        });
     }
 };
