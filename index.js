@@ -10,9 +10,7 @@ const routers =require('./Routes/Committee.route');
 const baseUserRoute = require('./Routes/baseUser.route');
 
 app.use('/sample',router);
-app.use('/api/add', baseUserRoute);
-app.use('/api/get', baseUserRoute);
-
+app.use('/api/user', baseUserRoute);
 app.use('/api/new',routers);
 
 connect();
