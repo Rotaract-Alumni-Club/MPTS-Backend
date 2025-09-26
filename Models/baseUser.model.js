@@ -8,7 +8,8 @@ const baseUserSchema = new mongoose.Schema({
     faculy:{type:String, required:true},
     batch:{type:String, required:true},
     contactNO:{type:String, required:true},
-    experience:{type:String}
+    experience:{type:String},
+    userRole:{type:String, required:true},
 });
 
 const BaseUser = mongoose.model('BaseUser', baseUserSchema);
