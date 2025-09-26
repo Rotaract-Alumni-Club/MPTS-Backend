@@ -11,10 +11,7 @@ const baseUserRoute = require('./Routes/baseUser.route');
 
 app.use('/sample',router);
 app.use('/api/user', baseUserRoute);
-
-app.use('/api/add',routers);
-app.use('/api/get',routers);
-//app.use('/api/get/id',routers);
+app.use('/api/committee',routers);
 
 connect();
 

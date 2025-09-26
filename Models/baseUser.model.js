@@ -15,4 +15,4 @@ const baseUserSchema = new mongoose.Schema({
 });
 
 const BaseUser = db.model('BaseUser', baseUserSchema);
-module.exports = BaseUser;
+module.exports = BaseUser; 
