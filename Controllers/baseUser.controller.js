@@ -14,3 +14,18 @@ exports.registerUser = async (req, res) => {
             error: error.message });
     }
 };
+
+exports.getAllUsers = async (req, res) => {
+    try {
+        const users = await userCollection.find();
+        res.status(200).send({
+            message: 'Users retrieved successfully',
+            data: users
+        });
+    } catch (error) {
+        res.status(500).send({
+            message: 'Error retrieving users',
+            error: error.message
+        });
+    }
+};

@@ -5,6 +5,7 @@ const baseUserControllers = require("../Controllers/baseUser.controller");
 const router = express.Router();
 
 // Route to register a new user
-router.post('/register', baseUserControllers.registerUser);
+router.post('/user', baseUserControllers.registerUser);
+router.get('/user', baseUserControllers.getAllUsers);
 
 module.exports = router;
