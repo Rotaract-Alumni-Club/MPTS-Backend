@@ -1,4 +1,6 @@
 const mongoose = require('mongoose');
+const db = mongoose.connection.useDb("MPTS");
+
 
 const committeeSchema = new mongoose.Schema({
     CName : { type: String, required: true, unique: true },
@@ -7,4 +9,5 @@ const committeeSchema = new mongoose.Schema({
     MemberCount: {type:Number, required:true}
 }, { timestamps: true });
 
-module.exports = committeeSchema;
+const Committee = db.model('Committee', committeeSchema);
+module.exports = Committee;
