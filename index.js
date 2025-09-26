@@ -1,11 +1,17 @@
 require('dotenv').config();
 const express = require('express');
 const connect = require('./Config/db');
-const router = require('./Routes/sample.route');
 
 const app = express();
 
+const router = require('./Routes/sample.route');
+const baseUserRoute = require('./Routes/baseUser.route');
+
+
+
 app.use('/sample',router);
+app.use('/api/user', baseUserRoute);
+
 
 connect();
 
