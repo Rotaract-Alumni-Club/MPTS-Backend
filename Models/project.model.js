@@ -8,4 +8,5 @@ const projectSchema = new mongoose.Schema({
     Status : { type: String, required: true },
 }, { timestamps: true });
 
-module.exports = projectSchema;
+const Project = mongoose.model('Project', projectSchema);
+module.exports = Project;

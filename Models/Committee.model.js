@@ -7,4 +7,5 @@ const committeeSchema = new mongoose.Schema({
     MemberCount: {type:Number, required:true}
 }, { timestamps: true });
 
-module.exports = committeeSchema;
+const Committee = mongoose.model('Committee', committeeSchema);
+module.exports = Committee;
