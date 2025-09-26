@@ -5,14 +5,12 @@ const connect = require('./Config/db');
 const app = express();
 
 app.use(express.json());
+
 const router = require('./Routes/sample.route');
 const baseUserRoute = require('./Routes/baseUser.route');
 
-
-
 app.use('/sample',router);
 app.use('/api/user', baseUserRoute);
-
 
 connect();
 
