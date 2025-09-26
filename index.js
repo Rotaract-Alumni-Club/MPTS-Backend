@@ -8,7 +8,13 @@ app.use(express.json());
 const router = require('./Routes/sample.route');
 const routers =require('./Routes/Committee.route');
 
+app.use(express.json());
+
+const router = require('./Routes/sample.route');
+const baseUserRoute = require('./Routes/baseUser.route');
+
 app.use('/sample',router);
+app.use('/api/user', baseUserRoute);
 
 connect();
 

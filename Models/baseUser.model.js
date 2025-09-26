@@ -14,5 +14,5 @@ const baseUserSchema = new mongoose.Schema({
     userRole:{type:String, required:true},
 });
 
-const BaseUser = mongoose.model('BaseUser', baseUserSchema);
+const BaseUser = db.model('BaseUser', baseUserSchema);
 module.exports = BaseUser;
