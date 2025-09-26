@@ -7,9 +7,9 @@ const taskSchema = new mongoose.Schema({
     AssignedTo:{type:String, required:true},
     Project:{type:String, required:true},
     Committee:{type:String, required:true},
-    Status:{type:String },
-    StartDate:{type:Date},
-    EndDate:{type:Date}
+    Status:{type:String, required:true}, 
+    StartDate:{type:Date, required:true},
+    EndDate:{type:Date, required:true},
 
 });
 
