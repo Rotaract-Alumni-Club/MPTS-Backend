@@ -9,7 +9,13 @@ app.use('/sample',router);
 
 connect();
 
+const routers =require('./Routes/Committee.route');
+app.use('/add/new',routers);
+
+app.use(express.json());
+
 app.listen(process.env.PORT,()=>{
     console.log(`Server Listen on Port ${process.env.PORT}`);
 });
+
 
