@@ -9,5 +9,5 @@ const member_projectSchema = new mongoose.Schema({
     
 });
 
-const MemberProject = mongoose.model('MemberProject', member_projectSchema);
+const MemberProject = db.model('MemberProject', member_projectSchema);
 module.exports = MemberProject;
