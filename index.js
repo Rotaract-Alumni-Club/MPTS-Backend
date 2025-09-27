@@ -14,11 +14,12 @@ const baseUserRoute = require('./Routes/baseUser.route');
 app.use('/sample',router);
 app.use('/api/user', baseUserRoute);
 app.use('/api/committee',routers);
+app.use
 
 connect();
 
 app.listen(process.env.PORT,()=>{
-    console.log(`Server Listen on Port ${process.env.PORT}`);
+    console.log(`Server connected to Port ${process.env.PORT}`);
 });
 
 
