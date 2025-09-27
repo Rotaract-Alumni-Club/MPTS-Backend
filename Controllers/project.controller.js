@@ -114,7 +114,7 @@ exports.getProjectByEndDate = async (req, res) => {
     }
 };
 
-exports.getProjectByCPerson = async (req, res) => {
+exports.getProjectByChairPerson = async (req, res) => {
     const cPerson = req.params.chairPerson;
     try{
         const project = await projectCollection.find({'chairPerson':cPerson});
