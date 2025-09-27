@@ -10,6 +10,7 @@ app.use(express.json());
 const router = require('./Routes/sample.route');
 const routers =require('./Routes/Committee.route');
 const baseUserRoute = require('./Routes/baseUser.route');
+const projectRoute = require('./Routes/project.route');
 
 app.use('/sample',router);
 app.use('/api/user', baseUserRoute);
