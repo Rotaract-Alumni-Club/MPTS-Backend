@@ -15,7 +15,7 @@ const projectRoute = require('./Routes/project.route');
 app.use('/sample',router);
 app.use('/api/user', baseUserRoute);
 app.use('/api/committee',routers);
-app.use
+app.use('/api/project', projectRoute);
 
 connect();
 
