@@ -18,9 +18,9 @@ res.status(200).send({
 };
 
 exports.getCommittees = async (req, res) => {
-    const data = req.body;
+    
     try{
-        const committees = await CommitteeCollection.find(data);
+        const committees = await CommitteeCollection.find();
         res.status(200).send({
             message: "Committees recieved successfully",
             data: committees
