@@ -4,7 +4,7 @@ const { param } = require('../Routes/project.route');
 exports.addProject = async (req, res) => {
     const data = req.body;
     try{
-        const newProject = new ProjectCollection(data);
+        const newProject = new projectCollection(data);
         await newProject.save();
 res.status(200).send({
             "Message": "Project added Sucessfully.",
@@ -19,9 +19,8 @@ res.status(200).send({
 
 
 exports.getAllProject = async (req, res) => {
-    const data = req.body;
     try{
-        const project = await projectCollection.find(data);
+        const project = await projectCollection.find();
         res.status(200).send({
             message: "Project recieved successfully",
             data: project
