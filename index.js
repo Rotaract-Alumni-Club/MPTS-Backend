@@ -13,7 +13,7 @@ const baseUserRoute = require('./Routes/baseUser.route');
 const taskRoute = require('./Routes/task.route');
 const projectRoute = require('./Routes/project.route');
 
-app.use('/task',taskRoute);
+app.use('/api/task',taskRoute);
 app.use('/sample',router);
 app.use('/api/user', baseUserRoute);
 app.use('/api/committee',routers);
@@ -22,7 +22,7 @@ app.use('/api/project', projectRoute);
 connect();
 
 app.listen(process.env.PORT,()=>{
-    console.log(`Server connected to Port ${process.env.PORT}`);
+    console.log(`Server Listen on Port ${process.env.PORT}`);
 });
 
 
