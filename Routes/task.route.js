@@ -5,3 +5,5 @@ const taskrouter = experss.Router();
 
 taskrouter.post('/create', taskController.createTask);
 taskrouter.get('/get', taskController.getAllTasks);
+
+module.exports = taskrouter;
