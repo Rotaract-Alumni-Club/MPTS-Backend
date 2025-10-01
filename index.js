@@ -21,7 +21,7 @@ app.use('/api/project', projectRoute);
 
 connect();
 
-app.listen(process.env.PORT,()=>{
+app.listen(5000,()=>{
     console.log(`Server Listen on Port ${process.env.PORT}`);
 });
 
