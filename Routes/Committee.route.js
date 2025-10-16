@@ -1,13 +1,23 @@
 const express = require('express');
-const committeeController = require("../Controllers/Committee.controller");
-
 const router = express.Router();
+const committeeController = require('../Controllers/committee.controller');
 
-router.post('/add',committeeController.addCommittee);
-router.get('/get',committeeController.getCommittees);
-router.get('/id/:id',committeeController.getCommitteesByID);
-router.get('/name/:name',committeeController.getCommitteesByName);
-router.get('/coordinator/:Coname',committeeController.getCommitteesByCoordinator);
-router.get('/mem/:Count',committeeController.getCommitteesByMemCount);
+
+
+router.post('/add', committeeController.addCommittee);
+router.get('/all', committeeController.getCommittees);
+router.get('/:id', committeeController.getCommitteeById);
+
+
+router.get('/project/:projectId', committeeController.getCommitteesByProject);
+
+router.get('/user/my-committees', committeeController.getUserCommittees);
+
+router.post('/:id/members', committeeController.addMember);
+router.delete('/:id/members', committeeController.removeMember);
+
+router.get('/name/:name', committeeController.getCommitteesByName);
+router.get('/coordinator/:Coname', committeeController.getCommitteesByCoordinator);
+router.get('/count/:Count', committeeController.getCommitteesByMemCount);
 
 module.exports = router;

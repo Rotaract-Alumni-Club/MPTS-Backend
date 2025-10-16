@@ -1,9 +1,16 @@
 require('dotenv').config();
 const express = require('express');
 const connect = require('./Config/db');
+const cors = require('cors');
 
 const app = express();
 app.use(express.json());
+
+app.use(cors({
+    origin: 'http://localhost:5173', // Replace with your frontend URL
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    credentials: true
+}));
 
 const router = require('./Routes/sample.route');
 const routers =require('./Routes/Committee.route');
