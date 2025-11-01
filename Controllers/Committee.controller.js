@@ -44,34 +44,15 @@ exports.addCommittee = async (req, res) => {
     }
 };
 
-// Get all committees for a specific project
-exports.getCommitteesByProject = async (req, res) => {
-    const { projectId } = req.params;
-    
-    try {
-        const committees = await CommitteeCollection.find({ ProjectId: projectId })
-            .populate('Members.UserId', 'name email')
-            .populate('Coordinator', 'name email');
-            
-        res.status(200).send({
-            message: "Committees retrieved successfully",
-            data: committees
-        });
-    } catch(err) {
-        res.status(500).send({
-            message: err.message
-        });
-    }
-};
-
-// Add member to committee (Only by Chairperson)
+// Add member to committee
 exports.addMember = async (req, res) => {
     const { id } = req.params; // Committee ID
     const { userId, userName, role } = req.body;
-    const currentUserId = req.user.id;
     
     try {
-        const committee = await CommitteeCollection.findById(id).populate('ProjectId');
+        console.log('Adding member:', { committeeId: id, userId, userName, role }); // Debug log
+        
+        const committee = await CommitteeCollection.findById(id);
         
         if (!committee) {
             return res.status(404).send({
@@ -79,16 +60,9 @@ exports.addMember = async (req, res) => {
             });
         }
 
-        // Check if current user is chairperson
-        if (committee.ProjectId.Chairperson.toString() !== currentUserId) {
-            return res.status(403).send({
-                message: "Only chairperson can add members"
-            });
-        }
-
         // Check if member already exists
         const memberExists = committee.Members.some(
-            member => member.UserId.toString() === userId
+            member => member.UserId && member.UserId.toString() === userId.toString()
         );
 
         if (memberExists) {
@@ -103,6 +77,8 @@ exports.addMember = async (req, res) => {
             Role: role || 'Member'
         });
 
+        console.log('Members after addition:', committee.Members.length); // Debug log
+
         await committee.save();
 
         res.status(200).send({
@@ -110,8 +86,10 @@ exports.addMember = async (req, res) => {
             data: committee
         });
     } catch (err) {
+        console.error('Error adding member:', err);
         res.status(500).send({
-            message: err.message
+            message: err.message,
+            error: err.toString()
         });
     }
 };
@@ -119,11 +97,12 @@ exports.addMember = async (req, res) => {
 // Remove member from committee
 exports.removeMember = async (req, res) => {
     const { id } = req.params; // Committee ID
-    const { userId } = req.body;
-    const currentUserId = req.user.id;
+    const { memberId } = req.body; // Member's _id in the Members array
     
     try {
-        const committee = await CommitteeCollection.findById(id).populate('ProjectId');
+        console.log('Removing member:', { committeeId: id, memberId }); // Debug log
+        
+        const committee = await CommitteeCollection.findById(id);
         
         if (!committee) {
             return res.status(404).send({
@@ -131,16 +110,22 @@ exports.removeMember = async (req, res) => {
             });
         }
 
-        // Check if current user is chairperson
-        if (committee.ProjectId.Chairperson.toString() !== currentUserId) {
-            return res.status(403).send({
-                message: "Only chairperson can remove members"
+        // Log before removal
+        console.log('Members before removal:', committee.Members.length);
+
+        // Remove member by _id
+        const originalLength = committee.Members.length;
+        committee.Members = committee.Members.filter(
+            member => member._id.toString() !== memberId.toString()
+        );
+
+        console.log('Members after removal:', committee.Members.length); // Debug log
+
+        if (committee.Members.length === originalLength) {
+            return res.status(404).send({
+                message: 'Member not found in committee'
             });
         }
-
-        committee.Members = committee.Members.filter(
-            member => member.UserId.toString() !== userId
-        );
 
         await committee.save();
 
@@ -149,38 +134,14 @@ exports.removeMember = async (req, res) => {
             data: committee
         });
     } catch (err) {
+        console.error('Error removing member:', err);
         res.status(500).send({
-            message: err.message
+            message: err.message,
+            error: err.toString()
         });
     }
 };
 
-// View committee details
-exports.getCommitteeById = async (req, res) => {
-    const { id } = req.params;
-    
-    try {
-        const committee = await CommitteeCollection.findById(id)
-            .populate('Members.UserId', 'name email role')
-            .populate('Coordinator', 'name email')
-            .populate('ProjectId', 'ProjectName');
-            
-        if (!committee) {
-            return res.status(404).send({
-                message: 'Committee not found'
-            });
-        }
-
-        res.status(200).send({
-            message: "Committee retrieved successfully",
-            data: committee
-        });
-    } catch(err) {
-        res.status(500).send({
-            message: err.message
-        });
-    }
-};
 
 // Get committees where user is a member
 exports.getUserCommittees = async (req, res) => {
@@ -202,19 +163,131 @@ exports.getUserCommittees = async (req, res) => {
     }
 };
 
+
+// Get committee by ID
+exports.getCommitteeById = async (req, res) => {
+    try {
+        const committee = await CommitteeCollection.findById(req.params.id);
+        
+        if (!committee) {
+            return res.status(404).send({
+                message: "Committee not found"
+            });
+        }
+        
+        res.status(200).send({
+            message: "Committee fetched successfully",
+            data: committee
+        });
+    } catch (err) {
+        console.error("Error fetching committee:", err);
+        res.status(500).send({
+            message: err.message,
+            error: err.toString()
+        });
+    }
+};
+
+// Get committees by name
+exports.getCommitteesByName = async (req, res) => {
+    try {
+        const committees = await CommitteeCollection.find({ 
+            CName: new RegExp(req.params.name, 'i') 
+        });
+        
+        res.status(200).send({
+            message: "Committees fetched successfully",
+            data: committees
+        });
+    } catch (err) {
+        console.error("Error fetching committees:", err);
+        res.status(500).send({
+            message: err.message
+        });
+    }
+};
+
+
+// Get committees by member count
+exports.getCommitteesByMemCount = async (req, res) => {
+    try {
+        const committees = await CommitteeCollection.find();
+        const filtered = committees.filter(
+            committee => committee.Members.length === parseInt(req.params.Count)
+        );
+        
+        res.status(200).send({
+            message: "Committees fetched successfully",
+            data: filtered
+        });
+    } catch (err) {
+        console.error("Error fetching committees:", err);
+        res.status(500).send({
+            message: err.message
+        });
+    }
+};
+
+// Get committees by project
+exports.getCommitteesByProject = async (req, res) => {
+    try {
+        const committees = await CommitteeCollection.find({ 
+            ProjectId: req.params.projectId 
+        });
+        
+        res.status(200).send({
+            message: "Committees fetched successfully",
+            data: committees
+        });
+    } catch (err) {
+        console.error("Error fetching committees:", err);
+        res.status(500).send({
+            message: err.message
+        });
+    }
+};
+
+// Get user committees
+exports.getUserCommittees = async (req, res) => {
+    try {
+        const userId = req.user?.id || req.query.userId;
+        
+        if (!userId) {
+            return res.status(400).send({
+                message: "User ID is required"
+            });
+        }
+        
+        const committees = await CommitteeCollection.find({
+            'Members.UserId': userId
+        });
+        
+        res.status(200).send({
+            message: "User committees fetched successfully",
+            data: committees
+        });
+    } catch (err) {
+        console.error("Error fetching user committees:", err);
+        res.status(500).send({
+            message: err.message
+        });
+    }
+};
+
+
 exports.getCommittees = async (req, res) => {
-   try{
-        const committees = await CommitteeCollection.find()
-            .populate('Members.UserId', 'name email')
-            .populate('ProjectId', 'ProjectName');
+   try {
+        const committees = await CommitteeCollection.find();
+        
         res.status(200).send({
             message: "Committees received successfully",
             data: committees
         });
     }
     catch(err){
+        console.error("Error in getCommittees:", err);
         res.status(500).send({
-            message : err.message
+            message: err.message
         });
     }
 };
@@ -237,22 +310,6 @@ exports.getCommitteesByID = async (req, res) => {
     }
 };
 
-exports.getCommitteesByName = async (req, res) => {
-    const name = req.params.name;
-    try{
-        const committees = await CommitteeCollection.find({'CName':name})
-            .populate('ProjectId', 'ProjectName');
-        res.status(200).send({
-            message: "Committees received successfully",
-            data: committees
-        });
-    }
-    catch(err){
-        res.status(500).send({
-            message : err.message
-        });
-    }
-};
 
 exports.getCommitteesByCoordinator = async (req, res) => {
     const Coname = req.params.Coname;

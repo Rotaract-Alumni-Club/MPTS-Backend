@@ -9,7 +9,7 @@ memberProjectRouter.post('/create', memberProjectController.createMemberProject)
 memberProjectRouter.get('/get', memberProjectController.getAllMemberProjects);
 memberProjectRouter.get('/get/id/:id', memberProjectController.getMemberProjectById);
 memberProjectRouter.get('/get/memberId/:memberId', memberProjectController.getMemberProjectByMemberId);
-memberProjectRouter.get('/get/projectId/:projectId', memberProjectController.getMemberProjectByProjectId);
-memberProjectRouter.get('/get/role/:role', memberProjectController.getMemberProjectByRole);
+memberProjectRouter.get('/get/name/:PName', memberProjectController.getMemberProjectByName);
+memberProjectRouter.get('/get/indexNo/:indexNo', memberProjectController.getRoleByIndexNo);
 
 module.exports = memberProjectRouter;
