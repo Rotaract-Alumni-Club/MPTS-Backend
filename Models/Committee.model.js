@@ -7,7 +7,7 @@ const committeeSchema = new mongoose.Schema(
     ProjectId: { type: mongoose.Schema.Types.ObjectId, ref: 'Project' },
     Members: [
       {
-        UserId: { type: mongoose.Schema.Types.ObjectId, ref: 'User'},
+        UserId: { type: mongoose.Schema.Types.ObjectId, ref: 'BaseUser'},
         UserName: { type: String},
         Role: { type: String, default: 'Member' }
       }

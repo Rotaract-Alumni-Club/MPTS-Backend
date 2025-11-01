@@ -4,7 +4,6 @@ console.log('DB_URL:', process.env.DB_URL);
 const express = require('express');
 const connect = require('./Config/db');
 const cors = require('cors');
-const cors = require('cors');
 
 const app = express();
 app.use(express.json());
