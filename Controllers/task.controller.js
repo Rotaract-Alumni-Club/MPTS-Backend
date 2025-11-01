@@ -157,3 +157,24 @@ exports.getTaskByEndDate = async (req, res) => {
         });
     }
 };
+
+exports.updateAssignedMembers = async (req, res) => {
+    const { id } = req.params;
+    const { AssignedTo } = req.body; // Expecting an array of member names
+    try {
+        const task = await TaskCollection.findByIdAndUpdate(
+            id,
+            { AssignedTo },
+            { new: true }
+        );
+        res.status(200).send({
+            message: "Assigned members updated successfully",
+            data: task
+        });
+    } catch (error) {
+        res.status(500).send({
+            message: "Error updating assigned members",
+            error: error.message
+        });
+    }
+};

@@ -13,5 +13,6 @@ taskrouter.get('/get/committee/:committee', taskController.getTaskByCommittee);
 taskrouter.get('/get/status/:status', taskController.getTaskByStatus);
 taskrouter.get('/get/startDate/:startDate', taskController.getTaskByStartDate);
 taskrouter.get('/get/endDate/:endDate', taskController.getTaskByEndDate);
+taskrouter.put('/updateAssigned/:id', taskController.updateAssignedMembers);
 
 module.exports = taskrouter;
