@@ -13,7 +13,6 @@ const committeeSchema = new mongoose.Schema(
       }
     ],
     MemberCount: { type: Number, default: 0 },
-    Coordinator: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
     Description: { type: String }
   },
   { timestamps: true }
