@@ -142,6 +142,36 @@ exports.removeMember = async (req, res) => {
     }
 };
 
+// Delete committee
+exports.deleteCommittee = async (req, res) => {
+    const { id } = req.params; // Committee ID
+    
+    try {
+        console.log('Deleting committee:', id); // Debug log
+        
+        const committee = await CommitteeCollection.findById(id);
+        
+        if (!committee) {
+            return res.status(404).send({
+                message: 'Committee not found'
+            });
+        }
+
+        await CommitteeCollection.findByIdAndDelete(id);
+
+        res.status(200).send({
+            message: 'Committee deleted successfully',
+            data: committee
+        });
+    } catch (err) {
+        console.error('Error deleting committee:', err);
+        res.status(500).send({
+            message: err.message,
+            error: err.toString()
+        });
+    }
+};
+
 
 // Get committees where user is a member
 exports.getUserCommittees = async (req, res) => {
