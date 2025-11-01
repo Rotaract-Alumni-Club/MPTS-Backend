@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const committeeController = require('../Controllers/committee.controller');
+const committeeController = require('../Controllers/Committee.controller');
 
 
 

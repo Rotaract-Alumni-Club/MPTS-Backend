@@ -214,7 +214,8 @@ exports.getCommittees = async (req, res) => {
     }
     catch(err){
         res.status(500).send({
-            message : err.message
+            message : err.message,
+            Code: err.code
         });
     }
 };
