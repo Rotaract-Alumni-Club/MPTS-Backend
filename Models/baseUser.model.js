@@ -1,4 +1,6 @@
 const mongoose = require('mongoose');
+const db = mongoose.connection.useDb("MPTS");
+
 
 const baseUserSchema = new mongoose.Schema({
     indexNo:{type:String, required:true, unique:true},
@@ -12,6 +14,5 @@ const baseUserSchema = new mongoose.Schema({
     userRole:{type:String, required:true},
 });
 
-const BaseUser = mongoose.model('BaseUser', baseUserSchema);
-
-module.exports = BaseUser;
+const BaseUser = db.model('BaseUser', baseUserSchema);
+module.exports = BaseUser; 
