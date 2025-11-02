@@ -181,6 +181,7 @@ exports.updateAssignedMembers = async (req, res) => {
     }
 };
 
+// ...existing code...
 exports.deleteTask = async (req, res) => {
     const { id } = req.params; 
     
@@ -210,48 +211,45 @@ exports.deleteTask = async (req, res) => {
     }
 };
 
-exports.removeCommittee = async (req, res) => {
-    const { id } = req.params; 
-    const { committeeId } = req.body; 
-    
+// ...existing code...
+exports.deleteTasksByCommittee = async (req, res) => {
+    const committeeName = req.params.committee;
     try {
-        console.log('Removing committee:', { taskId: id, committeeId }); 
-        
-        const task = await TaskCollection.findById(id);
-        
-        if (!task) {
-            return res.status(404).send({
-                message: 'Task not found'
-            });
-        }
-
-        console.log('Members before removal:', task.Committee.length);
-
-        const originalLength = task.Committee.length;
-        task.Committee = task.Committee.filter(
-           c => c._id.toString() !== committeeId.toString()
-        );
-
-       console.log('Committees after removal:', task.Committee.length);
-
-
-        if (task.Committee.length === originalLength) {
-            return res.status(404).send({
-                message: 'Committee not found in task'
-            });
-        }
-
-        await task.save();
-
+        const result = await TaskCollection.deleteMany({ Committee: committeeName });
         res.status(200).send({
-            message: 'committee removed successfully',
-            data: task
+            message: `Deleted ${result.deletedCount} task(s) for committee ${committeeName}`,
+            deletedCount: result.deletedCount
         });
     } catch (err) {
-        console.error('Error removing committee:', err);
+        console.error('Error deleting tasks by committee:', err);
         res.status(500).send({
             message: err.message,
             error: err.toString()
         });
     }
 };
+
+// new: remove committee field from tasks (keeps tasks, unassigns committee)
+exports.removeCommittee = async (req, res) => {
+    try {
+        const { committee } = req.body;
+        if (!committee) {
+            return res.status(400).send({ message: 'Committee name is required in request body' });
+        }
+        const result = await TaskCollection.updateMany(
+            { Committee: committee },
+            { $unset: { Committee: "" } }
+        );
+        res.status(200).send({
+            message: `Removed committee field from ${result.modifiedCount} task(s)`,
+            modifiedCount: result.modifiedCount
+        });
+    } catch (err) {
+        console.error('Error removing committee from tasks:', err);
+        res.status(500).send({
+            message: err.message,
+            error: err.toString()
+        });
+    }
+};
+// ...existing code...

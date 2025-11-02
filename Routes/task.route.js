@@ -1,7 +1,8 @@
-const experss = require("express");
+const express = require("express");
+ const taskrouter = express.Router();
 const taskController = require("../Controllers/task.controller");
 
-const taskrouter = experss.Router();
+
 
 taskrouter.post('/create', taskController.createTask);
 taskrouter.get('/get', taskController.getAllTasks);
@@ -14,7 +15,8 @@ taskrouter.get('/get/status/:status', taskController.getTaskByStatus);
 taskrouter.get('/get/startDate/:startDate', taskController.getTaskByStartDate);
 taskrouter.get('/get/endDate/:endDate', taskController.getTaskByEndDate);
 taskrouter.put('/updateAssigned/:id', taskController.updateAssignedMembers);
-taskrouter.delete('/delete',taskController.deleteTask);
-taskrouter.delete('/delete/committee',taskController.removeCommittee)
+taskrouter.delete('/delete/:id', taskController.deleteTask);
+taskrouter.delete('/delete/committee/:committee', taskController.deleteTasksByCommittee);
+taskrouter.delete('/delete/committeeFromTask', taskController.removeCommittee);
 
 module.exports = taskrouter;
