@@ -3,12 +3,14 @@ const TaskCollection = require('../Models/task.model');
 exports.createTask = async (req, res) => {
     try {
         const taskData = req.body;
+       console.log("Incoming task data:", req.body);
         const task = new TaskCollection(taskData);
         await task.save();
         res.status(200).send({ 
             message: 'Task created successfully', 
             data: task });
     } catch (error) {
+         console.error("Error creating task:", error);
         res.status(500).send({ 
             message: 'Error creating task', 
             error: error.message });
