@@ -180,3 +180,78 @@ exports.updateAssignedMembers = async (req, res) => {
         });
     }
 };
+
+exports.deleteTask = async (req, res) => {
+    const { id } = req.params; 
+    
+    try {
+        console.log('Deleting task:', id);
+        
+        const task = await TaskCollection.findById(id);
+        
+        if (!task) {
+            return res.status(404).send({
+                message: 'Task not found'
+            });
+        }
+
+        await TaskCollection.findByIdAndDelete(id);
+
+        res.status(200).send({
+            message: 'Task deleted successfully',
+            data: task
+        });
+    } catch (err) {
+        console.error('Error deleting task:', err);
+        res.status(500).send({
+            message: err.message,
+            error: err.toString()
+        });
+    }
+};
+
+exports.removeCommittee = async (req, res) => {
+    const { id } = req.params; 
+    const { committeeId } = req.body; 
+    
+    try {
+        console.log('Removing committee:', { taskId: id, committeeId }); 
+        
+        const task = await TaskCollection.findById(id);
+        
+        if (!task) {
+            return res.status(404).send({
+                message: 'Task not found'
+            });
+        }
+
+        console.log('Members before removal:', task.Committee.length);
+
+        const originalLength = task.Committee.length;
+        task.Committee = task.Committee.filter(
+           c => c._id.toString() !== committeeId.toString()
+        );
+
+       console.log('Committees after removal:', task.Committee.length);
+
+
+        if (task.Committee.length === originalLength) {
+            return res.status(404).send({
+                message: 'Committee not found in task'
+            });
+        }
+
+        await task.save();
+
+        res.status(200).send({
+            message: 'committee removed successfully',
+            data: task
+        });
+    } catch (err) {
+        console.error('Error removing committee:', err);
+        res.status(500).send({
+            message: err.message,
+            error: err.toString()
+        });
+    }
+};

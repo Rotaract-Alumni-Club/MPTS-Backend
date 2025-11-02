@@ -14,5 +14,7 @@ taskrouter.get('/get/status/:status', taskController.getTaskByStatus);
 taskrouter.get('/get/startDate/:startDate', taskController.getTaskByStartDate);
 taskrouter.get('/get/endDate/:endDate', taskController.getTaskByEndDate);
 taskrouter.put('/updateAssigned/:id', taskController.updateAssignedMembers);
+taskrouter.delete('/delete',taskController.deleteTask);
+taskrouter.delete('/delete/committee',taskController.removeCommittee)
 
 module.exports = taskrouter;
