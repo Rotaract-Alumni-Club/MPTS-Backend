@@ -6,18 +6,19 @@ const committeeController = require('../Controllers/Committee.controller');
 
 router.post('/add', committeeController.addCommittee);
 router.get('/all', committeeController.getCommittees);
-router.get('/:id', committeeController.getCommitteeById);
 
 
+router.get('/name/:name', committeeController.getCommitteesByName);
+router.get('/count/:Count', committeeController.getCommitteesByMemCount);
 router.get('/project/:projectId', committeeController.getCommitteesByProject);
-
 router.get('/user/my-committees', committeeController.getUserCommittees);
+
+router.get('/:id', committeeController.getCommitteeById);
 
 router.post('/:id/members', committeeController.addMember);
 router.delete('/:id/members', committeeController.removeMember);
+router.delete('/:id', committeeController.deleteCommittee);
 
-router.get('/name/:name', committeeController.getCommitteesByName);
-router.get('/coordinator/:Coname', committeeController.getCommitteesByCoordinator);
-router.get('/count/:Count', committeeController.getCommitteesByMemCount);
+
 
 module.exports = router;
